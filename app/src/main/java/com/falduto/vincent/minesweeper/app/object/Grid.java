@@ -140,14 +140,4 @@ public class Grid {
     public int getY() {
         return mY;
     }
-
-    private class Coordinate {
-        public int x;
-        public int y;
-
-        public Coordinate(int vx, int vy) {
-            this.x = vx;
-            this.y = vy;
-        }
-    }
 }
