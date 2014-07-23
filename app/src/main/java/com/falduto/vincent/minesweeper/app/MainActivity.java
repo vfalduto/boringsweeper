@@ -26,6 +26,14 @@ public class MainActivity extends Activity {
         setRandomColorBackground();
 
         GameController gameController = new GameController(mGrid);
+        gameController.setGameControllerListener(new GameController.GameControllerListener() {
+
+            @Override
+            public void onGameStateChange(int State) {
+                //todo display win/lose state
+            }
+
+        });
     }
 
     @Override

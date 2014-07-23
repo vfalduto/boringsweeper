@@ -1,11 +1,5 @@
 package com.falduto.vincent.minesweeper.app.object;
 
-import android.widget.Button;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-
-import com.falduto.vincent.minesweeper.app.util.ColorRandom;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,35 +15,17 @@ public class Grid {
     private int mX;
     private int mY;
 
-    public Grid(TableLayout view, int x, int y, int mine) {
+    public Grid(int x, int y, int mine) {
 
         this.mX = x;
         this.mY = y;
         this.mTotalMine = mine;
 
         generateBoard();
+    }
 
-        //TODO should be done outside grid
-
-        for (int px = 0; px < this.mX; px++) {
-            TableRow tr = new TableRow(view.getContext());
-            for (int py = 0; py < this.mY; py++) {
-                Button b = new Button(view.getContext());
-
-                if (this.isMine(px, py)) {
-                    b.setText("M");
-                    b.setBackgroundColor(0);
-                } else if (this.mBoard[px][py] > 0) {
-                    b.setText("" + this.mBoard[px][py]);
-                    b.setBackgroundColor(ColorRandom.getInstance().generateRandomColor());
-                }
-
-                b.setTextSize(20.0f);
-
-                tr.addView(b, 90, 90);
-            }
-            view.addView(tr);
-        }
+    public int getValue(int x, int y) {
+        return mBoard[x][y];
     }
 
     public boolean isMine(int x, int y) {
@@ -112,7 +88,6 @@ public class Grid {
         }
 
         //try to avoid 8 mine around one position
-        //Todo Maybe should change for 2
         if (nearMineCount == coordinates.size() - 1) {
             return false;
         } else {
@@ -156,6 +131,14 @@ public class Grid {
         }
 
         return coordinates;
+    }
+
+    public int getX() {
+        return mX;
+    }
+
+    public int getY() {
+        return mY;
     }
 
     private class Coordinate {
