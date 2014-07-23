@@ -3,6 +3,7 @@ package com.falduto.vincent.minesweeper.app.game;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Toast;
 
 import com.falduto.vincent.minesweeper.app.object.Button;
 import com.falduto.vincent.minesweeper.app.object.Coordinate;
@@ -66,6 +67,9 @@ public class GameController implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         //todo game here
+        Button button = (Button)v;
+        CharSequence text = button.getCoordinate().x + " - " + button.getCoordinate().y;
+        Toast.makeText(v.getContext(), text, Toast.LENGTH_SHORT);
     }
 
 

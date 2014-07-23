@@ -34,4 +34,8 @@ public class Button extends android.widget.Button {
     public Button(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
+
+    public Coordinate getCoordinate() {
+        return mCoordinate;
+    }
 }
