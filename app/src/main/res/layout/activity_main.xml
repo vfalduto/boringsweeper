@@ -7,7 +7,6 @@
     tools:context="com.falduto.vincent.minesweeper.app.MainActivity">
 
 
-
     <com.falduto.vincent.minesweeper.app.util.TwoDScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,17 +15,16 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="match_parent">
 
 
-            <TableLayout
+            <com.falduto.vincent.minesweeper.app.object.TableLayoutGrid
                 android:id="@+id/grid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp">
+                android:layout_margin="80dp">
 
-                </TableLayout>
+            </com.falduto.vincent.minesweeper.app.object.TableLayoutGrid>
 
         </FrameLayout>
 
@@ -55,6 +53,22 @@
                 android:textColor="@android:color/white"
                 android:textSize="18dp" />
         </LinearLayout>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_overlay"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:id="@+id/slide">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/result" />
+
+        />
     </FrameLayout>
 
 </FrameLayout>

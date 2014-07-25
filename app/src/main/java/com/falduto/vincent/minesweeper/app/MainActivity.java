@@ -4,16 +4,22 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.TableLayout;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.falduto.vincent.minesweeper.app.game.GameController;
+import com.falduto.vincent.minesweeper.app.object.CaseButton;
+import com.falduto.vincent.minesweeper.app.object.Coordinate;
+import com.falduto.vincent.minesweeper.app.object.Grid;
+import com.falduto.vincent.minesweeper.app.object.TableLayoutGrid;
 import com.falduto.vincent.minesweeper.app.util.ColorRandom;
 import com.falduto.vincent.minesweeper.app.util.TwoDScrollView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnClickListener {
 
-    protected TwoDScrollView mBoard;
-    protected TableLayout mGrid;
+    private TwoDScrollView mScrollViewContainer;
+    private TableLayoutGrid mTableLayout;
+    private GameController gameController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,19 +27,43 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         initSystemUiFullscreenMode();
-        initBoardAndSetPosition();
-        initGrid();
+
+        //visual objects
+        initScrollViewContainer();
+        mTableLayout = (TableLayoutGrid) findViewById(R.id.grid);
         setRandomColorBackground();
 
-        GameController gameController = new GameController(mGrid);
+        //game object
+        gameController = new GameController();
         gameController.setGameControllerListener(new GameController.GameControllerListener() {
 
             @Override
-            public void onGameStateChange(int State) {
-                //todo display win/lose state
+            public void onGridCreated(Grid grid) {
+                mTableLayout.initFromGrid(grid, MainActivity.this);
             }
 
+            @Override
+            public void onGameStateChange(int state) {
+                if(state == GameController.STATE_PLAY) {
+                    return;
+                }
+
+                FrameLayout layout = (FrameLayout) findViewById(R.id.slide);
+                layout.setVisibility(View.VISIBLE);
+                TextView text = (TextView) findViewById(R.id.result);
+                text.setText((state == GameController.STATE_LOSE ? "Lose" : "Win"));
+            }
         });
+        gameController.start();
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v instanceof CaseButton) {
+            this.gameController.reveal((CaseButton) v, this.mTableLayout);
+        }
+
     }
 
     @Override
@@ -46,20 +76,16 @@ public class MainActivity extends Activity {
         findViewById(R.id.background).setBackgroundColor(ColorRandom.getInstance().generateRandomColor());
     }
 
-    public void initGrid() {
-        mGrid = (TableLayout) findViewById(R.id.grid);
-        mGrid.setPadding(1, 1, 1, 1);
-    }
+    public void initScrollViewContainer() {
+        mScrollViewContainer = (TwoDScrollView) findViewById(R.id.board);
 
-    public void initBoardAndSetPosition() {
-        mBoard = (TwoDScrollView) findViewById(R.id.board);
-        ViewTreeObserver viewTreeObserver = mBoard.getViewTreeObserver();
+        ViewTreeObserver viewTreeObserver = mScrollViewContainer.getViewTreeObserver();
         if (viewTreeObserver.isAlive()) {
             viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override
                 public void onGlobalLayout() {
-                    mBoard.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    mBoard.center();
+                    mScrollViewContainer.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    mScrollViewContainer.center();
                 }
             });
         }

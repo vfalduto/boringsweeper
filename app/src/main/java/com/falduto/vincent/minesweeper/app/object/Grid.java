@@ -9,6 +9,7 @@ import java.util.Random;
  */
 public class Grid {
     public final static int TYPE_MINE = 11;
+    public final static int TYPE_EMPTY = 0;
 
     private int[][] mBoard;
     private int mTotalMine;
@@ -24,12 +25,16 @@ public class Grid {
         generateBoard();
     }
 
-    public int getValue(int x, int y) {
-        return mBoard[x][y];
+    public int getValue(Coordinate coordinate) {
+        return mBoard[coordinate.x][coordinate.y];
     }
 
     public boolean isMine(int x, int y) {
         return this.mBoard[x][y] == TYPE_MINE;
+    }
+
+    public boolean isMine(Coordinate coordinate) {
+        return isMine(coordinate.x, coordinate.y);
     }
 
     /**
@@ -95,11 +100,15 @@ public class Grid {
         }
     }
 
+    public List<Coordinate> getNearCoordinates(Coordinate coordinate) {
+        return getNearCoordinates(coordinate.x, coordinate.y);
+    }
+
     private List<Coordinate> getNearCoordinates(int x, int y) {
         List<Coordinate> coordinates = new ArrayList<Coordinate>();
 
-        if (x - 1 > 0) {
-            if (y - 1 > 0) {
+        if (x - 1 >= 0) {
+            if (y - 1 >= 0) {
                 coordinates.add(new Coordinate(x - 1, y - 1));
             }
 
@@ -111,7 +120,7 @@ public class Grid {
         }
 
         if (x + 1 < this.mX) {
-            if (y - 1 > 0) {
+            if (y - 1 >= 0) {
                 coordinates.add(new Coordinate(x + 1, y - 1));
             }
 
@@ -122,7 +131,7 @@ public class Grid {
             }
         }
 
-        if (y - 1 > 0) {
+        if (y - 1 >= 0) {
             coordinates.add(new Coordinate(x, y - 1));
         }
 
